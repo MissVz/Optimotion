@@ -11,5 +11,3 @@ This folder contains Jupyter notebooks related to preliminary experiments, explo
 - `forward_kinematics_exploration.ipynb`
 - `cost_function_analysis.ipynb`
 - `trajectory_visualization_demo.ipynb`
-
----

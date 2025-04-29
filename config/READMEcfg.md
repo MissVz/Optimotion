@@ -9,5 +9,3 @@ This folder contains configuration files used to manage parameters, settings, an
 ## Example Future Files:
 - `default_config.yaml`
 - `simulation_params.json`
-
----

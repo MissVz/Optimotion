@@ -12,5 +12,3 @@ This folder stores output artifacts generated during the Optimotion project.
 - `trajectory_initial_vs_optimized.png`
 - `cost_convergence_curve.png`
 - `arm_movement_animation.gif`
-
----
