@@ -1,20 +1,16 @@
 # /src/visualizations
 
-This folder contains scripts responsible for generating static and dynamic visualizations from simulation outputs.
+This folder contains modular, reusable scripts for generating visual outputs from the Optimotion simulation.
 
-## Intended Contents:
-- Static plots of robotic arm trajectories
-- Cost function convergence graphs
-- Animated motion trajectory (if stretch goal achieved)
-
-## Example Future Files:
-- `plot_trajectory.py`
-- `plot_cost_function.py`
-- `animate_arm_movement.py`
+## Contents:
+- `cost_convergence_plot.py` – Plots cost vs. iteration to evaluate optimization behavior
+- `pose_comparison_plot.py` – Compares initial and optimized arm poses side-by-side
+- `fwd_kinematics_plot.py` – Plots a static arm pose from a given joint configuration
 
 ## Notes:
-- Visualizations use `matplotlib` (and optionally `matplotlib.animation` for dynamic plots).
-- Outputs from these scripts should be saved to the `/outputs` directory.
-- Scripts should be modular and accept inputs (e.g., joint angles, costs) rather than hardcoding data.
+- All functions accept `output_dir` and `filename` as parameters for consistent path control
+- Plots are used in TP02 Methodology and Appendix B
+- Output files are saved to `/outputs/` and referenced from `run_poc_sim.ipynb`
 
----
+## Acknowledgments
+OpenAI. (2025). *ChatGPT’s assistance with mathematical modeling and code generation for DS623 Optimotion project* [Large language model]. https://openai.com/chatgpt

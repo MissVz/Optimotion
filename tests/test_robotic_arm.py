@@ -1,60 +1,72 @@
+
 """
-optimizer.py
+test_robotic_arm.py
 
-This module implements the optimization logic to improve robotic arm motion 
-through gradient descent.
+This test script includes unit tests to verify the correctness of core functions
+used in the Optimotion project PoC, specifically forward kinematics and the cost function.
 
-Core Responsibilities:
-- Define the cost function based on distance to target and energy efficiency.
-- Compute gradients of the cost function with respect to joint angles.
-- Apply manual gradient descent to optimize joint angles iteratively.
-
-Author(s): Verónica Elze, Sumit Chahar, Rosalia Miray
+Student: Verónica Elze
 Course: DS623 Math & Statistics for Data Science
-Institution: City University of Seattle
 """
 
 # Import necessary libraries
-import numpy as np
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# Define cost function
-def compute_cost(theta1, theta2, target_x, target_y, link1_length=1.0, link2_length=1.0):
+# Import necessary modules
+from src.robotic_arm import forward_kinematics
+from src.optimizer import compute_cost
+
+# Test cases for the robotic arm's forward kinematics and cost function
+def test_forward_kinematics_zero_angles():
     """
-    Calculate the cost based on distance to the target and energy usage.
-
-    Parameters:
-    - theta1, theta2: Current joint angles
-    - target_x, target_y: Target position coordinates
-
-    Returns:
-    - cost: Scalar value representing cost
+    Test that the end-effector reaches (2.0, 0.0) when both joint angles are 0.
+    This validates basic forward kinematics when the arm is fully extended.
     """
-    # (Function body here)
-    pass
+    theta1 = 0 # Joint angle 1
+    theta2 = 0 # Joint angle 2
+    
+    # Compute the end-effector position using forward kinematics
+    x, y = forward_kinematics(theta1, theta2)
+    
+    # Check if the end-effector position is as expected
+    # The expected position is (2.0, 0.0) when both angles are 0
+    assert round(x, 5) == 2.0
+    assert round(y, 5) == 0.0
+    
+    # Print the end-effector position for debugging purposes
+    print(f"End-effector position: x={x}, y={y}")
+    
+    # This message indicates that the test has passed successfully
+    print("✅ test_forward_kinematics_zero_angles passed.")
 
-# Define gradient computation
-def compute_gradients(theta1, theta2, target_x, target_y):
+# Test cases for the cost function
+def test_cost_at_target():
     """
-    Approximate the gradient of the cost function with respect to joint angles.
-
-    Returns:
-    - grad_theta1, grad_theta2: Gradients for updating joint angles
+    Test that the cost is zero when the end-effector exactly reaches the target.
+    Validates correctness of the compute_cost function.
     """
-    # (Function body here)
-    pass
+    theta1 = 0 # Joint angle 1
+    theta2 = 0 # Joint angle 2
+    
+    # Target position for the end-effector
+    target_x, target_y = 2.0, 0.0
+    
+    # Compute the cost at the target position
+    cost = compute_cost(theta1, theta2, target_x, target_y)
+    assert round(cost, 5) == 0.0 # Cost should be zero at the target
+    
+    # Print the cost for debugging purposes
+    print(f"Cost at target: {cost}")
+    
+    # This message indicates that the test has passed successfully
+    print("✅ test_cost_at_target passed.")
 
-# Define gradient descent optimizer
-def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.01, iterations=100):
-    """
-    Perform gradient descent to minimize the cost function.
+# Run the tests
+# This block ensures that the tests are executed when the script is run directly.
+if __name__ == "__main__":
+    test_forward_kinematics_zero_angles()
+    test_cost_at_target()
 
-    Parameters:
-    - initial_theta1, initial_theta2: Starting joint angles
-    - learning_rate: Step size for updates
-    - iterations: Number of optimization steps
-
-    Returns:
-    - optimized_theta1, optimized_theta2: Final optimized joint angles
-    """
-    # (Function body here)
-    pass
+# OpenAI. (2025). ChatGPT’s assistance with code generation for DS623 Optimotion project [Large language model]. https://openai.com/chatgpt

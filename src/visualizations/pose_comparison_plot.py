@@ -43,3 +43,5 @@ def plot_pose_comparison(theta1_init, theta2_init, theta1_opt, theta2_opt, title
     plt.savefig(output_path)
     print(f"✅ Pose comparison plot saved to: {output_path}")
     plt.show()
+
+# OpenAI. (2025). ChatGPT’s assistance with ploting and code generation for DS623 Optimotion project [Large language model]. https://openai.com/chatgpt

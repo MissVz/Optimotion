@@ -29,3 +29,5 @@ def plot_robot_arm(theta1, theta2, link1_length=1.0, link2_length=1.0, title="")
     plt.savefig(output_path)
     print(f"✅ Trajectory plot saved to: {output_path}")
     plt.show()
+    
+# OpenAI. (2025). ChatGPT’s assistance with ploting and code generation for DS623 Optimotion project [Large language model]. https://openai.com/chatgpt
