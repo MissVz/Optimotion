@@ -45,7 +45,7 @@ Project File Structure:
     optimizer.py           # Cost, gradients, and optimization loop
     robotic_arm.py         # Forward kinematics calculation
 /tests
-    test_robotic_arm.py    # Unit test for FK (extendable)
+    test_robotic_arm.py    # Unit tests for forward kinematics and cost function
 /.gitignore
 requirements.txt
 README.md
