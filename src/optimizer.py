@@ -90,3 +90,5 @@ def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_ra
             print(f"Iteration {i+1}: Cost = {cost:.4f}")
 
     return theta1, theta2, history
+
+# OpenAI. (2025). ChatGPT’s assistance with mathematical modeling and code generation for DS623 Optimotion project [Large language model]. https://openai.com/chatgpt

@@ -1,13 +1,8 @@
 # /notebooks
 
-This folder contains Jupyter notebooks related to preliminary experiments, exploration, and visual demonstrations for Optimotion.
+This directory contains the notebook used to execute and demonstrate the full PoC simulation for the Optimotion project.
 
-## Intended Contents:
-- Early experiments with forward kinematics
-- Manual validation of cost function behavior
-- Prototype visualization demos
+- `run_poc_sim.ipynb` – Gradient descent simulation, cost convergence, pose plots (used in TP02)
 
-## Example Future Files:
-- `forward_kinematics_exploration.ipynb`
-- `cost_function_analysis.ipynb`
-- `trajectory_visualization_demo.ipynb`
+## Acknowledgments
+OpenAI. (2025). *ChatGPT’s assistance with mathematical modeling and code generation for DS623 Optimotion project* [Large language model]. https://openai.com/chatgpt

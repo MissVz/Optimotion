@@ -1,6 +1,8 @@
 # /src/data
 
-This folder contains generated datasets used for the Optimotion simulation.
+_(This folder remains empty in TP02. All data is generated and used in memory.)_
+
+This folder may contain generated datasets to be used for future Optimotion simulation.
 
 ## Intended Contents:
 - Synthetic joint-angle configurations
@@ -17,4 +19,5 @@ This folder contains generated datasets used for the Optimotion simulation.
 - No external real-world datasets are required.
 - Data should be lightweight and structured (NumPy arrays, CSV files) to maintain simplicity and reproducibility.
 
----
+## Acknowledgments
+OpenAI. (2025). *ChatGPT’s assistance with mathematical modeling and code generation for DS623 Optimotion project* [Large language model]. https://openai.com/chatgpt
