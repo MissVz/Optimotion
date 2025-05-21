@@ -16,45 +16,77 @@ Institution: City University of Seattle
 
 # Import necessary libraries
 import numpy as np
+from math import sqrt
+from src.robotic_arm import forward_kinematics  # Adjust path if needed
 
 # Define cost function
 def compute_cost(theta1, theta2, target_x, target_y, link1_length=1.0, link2_length=1.0):
     """
-    Calculate the cost based on distance to the target and energy usage.
+    Compute the cost as the Euclidean distance between end-effector and target.
 
     Parameters:
-    - theta1, theta2: Current joint angles
-    - target_x, target_y: Target position coordinates
+    - theta1, theta2: joint angles (radians)
+    - target_x, target_y: target coordinates
+    - link1_length, link2_length: lengths of the two arm segments
 
     Returns:
-    - cost: Scalar value representing cost
+    - cost: Euclidean distance to target
     """
-    # (Function body here)
-    pass
+    x, y = forward_kinematics(theta1, theta2, link1_length, link2_length)
+    cost = sqrt((x - target_x)**2 + (y - target_y)**2)
+    return cost
 
 # Define gradient computation
-def compute_gradients(theta1, theta2, target_x, target_y):
+def compute_gradients(theta1, theta2, target_x, target_y, epsilon=1e-5):
     """
-    Approximate the gradient of the cost function with respect to joint angles.
-
-    Returns:
-    - grad_theta1, grad_theta2: Gradients for updating joint angles
-    """
-    # (Function body here)
-    pass
-
-# Define gradient descent optimizer
-def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.01, iterations=100):
-    """
-    Perform gradient descent to minimize the cost function.
+    Compute numerical gradients of the cost function with respect to theta1 and theta2 using finite differences.
 
     Parameters:
-    - initial_theta1, initial_theta2: Starting joint angles
-    - learning_rate: Step size for updates
-    - iterations: Number of optimization steps
+    - theta1, theta2: Current joint angles (radians)
+    - target_x, target_y: Target coordinates
+    - epsilon: Small perturbation value for finite difference
 
     Returns:
-    - optimized_theta1, optimized_theta2: Final optimized joint angles
+    - grad_theta1, grad_theta2: Estimated gradients
     """
-    # (Function body here)
-    pass
+    cost = compute_cost(theta1, theta2, target_x, target_y)
+
+    cost_theta1 = compute_cost(theta1 + epsilon, theta2, target_x, target_y)
+    grad_theta1 = (cost_theta1 - cost) / epsilon
+
+    cost_theta2 = compute_cost(theta1, theta2 + epsilon, target_x, target_y)
+    grad_theta2 = (cost_theta2 - cost) / epsilon
+
+    return grad_theta1, grad_theta2
+
+# Define gradient descent optimizer
+def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.1, iterations=100):
+    """
+    Perform gradient descent to optimize joint angles.
+
+    Parameters:
+    - initial_theta1, initial_theta2: starting joint angles (radians)
+    - target_x, target_y: coordinates of the target point
+    - learning_rate: step size for updates
+    - iterations: number of iterations to run
+
+    Returns:
+    - optimized_theta1, optimized_theta2: final joint angles (radians)
+    - history: list of (theta1, theta2, cost) tuples over iterations
+    """
+    theta1, theta2 = initial_theta1, initial_theta2
+    history = []
+
+    for i in range(iterations):
+        cost = compute_cost(theta1, theta2, target_x, target_y)
+        grad1, grad2 = compute_gradients(theta1, theta2, target_x, target_y)
+
+        theta1 -= learning_rate * grad1
+        theta2 -= learning_rate * grad2
+
+        history.append((theta1, theta2, cost))
+
+        if i % 10 == 0 or i == iterations - 1:
+            print(f"Iteration {i+1}: Cost = {cost:.4f}")
+
+    return theta1, theta2, history

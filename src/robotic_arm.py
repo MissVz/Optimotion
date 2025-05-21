@@ -28,8 +28,19 @@ def forward_kinematics(theta1, theta2, link1_length=1.0, link2_length=1.0):
     - link1_length: Length of first arm segment
     - link2_length: Length of second arm segment
 
-    Returns:
-    - (x, y): Tuple representing end-effector coordinates
+     Returns:
+    - Tuple: (x, y) coordinates of the end-effector
     """
-    # (Function body here)
-    pass
+    x = link1_length * np.cos(theta1) + link2_length * np.cos(theta1 + theta2)
+    y = link1_length * np.sin(theta1) + link2_length * np.sin(theta1 + theta2)
+    return x, y
+
+# === Example test case ===
+if __name__ == "__main__":
+    # Test case: both joint angles are 0 radians
+    theta1 = np.radians(0)
+    theta2 = np.radians(0)
+    x, y = forward_kinematics(theta1, theta2)
+    print(f"End-effector position for θ1=0°, θ2=0°: ({x:.2f}, {y:.2f})")
+    
+# OpenAI. (2025). ChatGPT’s assistance with mathematical modeling and code generation for DS623 Optimotion project [Large language model]. https://openai.com/chatgpt
