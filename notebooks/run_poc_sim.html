@@ -7312,6 +7312,7 @@ a.anchor-link {
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -7516,7 +7517,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="run_poc_simulation.py">run_poc_simulation.py<a class="anchor-link" href="#run_poc_simulation.py">¶</a></h1>
+<h1 id="Optimotion-PoC-Simulation-Notebook">Optimotion PoC Simulation Notebook<a class="anchor-link" href="#Optimotion-PoC-Simulation-Notebook">¶</a></h1><p>This notebook demonstrates the full optimization process for a two-joint robotic arm using forward kinematics and gradient descent.<br/>
+It is referenced in TP02 Appendix B and supports the Methodology section with visual outputs.</p>
 </div>
 </div>
 </div>
@@ -7527,21 +7529,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Imports">Imports<a class="anchor-link" href="#Imports">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=25efe468">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
+<h2 id="Imports-&amp;-Setup">Imports &amp; Setup<a class="anchor-link" href="#Imports-&amp;-Setup">¶</a></h2><p>These cells ensure modules from <code>/src</code> are importable and that all visualizations are saved to the root-level <code>/outputs/</code> directory.</p>
 </div>
 </div>
 </div>
@@ -7564,9 +7552,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 </pre></div>
 </div>
 </div>
@@ -7670,10 +7658,83 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.robotic_arm</span> <span class="kn">import</span> <span class="n">forward_kinematics</span>
-<span class="kn">from</span> <span class="nn">src.optimizer</span> <span class="kn">import</span> <span class="n">compute_cost</span><span class="p">,</span> <span class="n">compute_gradients</span><span class="p">,</span> <span class="n">optimize_arm</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.robotic_arm</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward_kinematics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.optimizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_cost</span><span class="p">,</span> <span class="n">compute_gradients</span><span class="p">,</span> <span class="n">optimize_arm</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=21bb0877-152a-4656-9229-1c46ccf3c4c7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="To-explain-gradient-descent-for-a-robotic-arm-in-layman's-terms,-let's-use-an-analogy-and-then-walk-through-the-process-with-simple-math.">To explain <strong>gradient descent for a robotic arm</strong> in <strong>layman's terms</strong>, let's use an analogy and then walk through the process with simple math.<a class="anchor-link" href="#To-explain-gradient-descent-for-a-robotic-arm-in-layman's-terms,-let's-use-an-analogy-and-then-walk-through-the-process-with-simple-math.">¶</a></h2><hr/>
+<h2 id="%F0%9F%A7%A0-Imagine-This-Situation">🧠 <strong>Imagine This Situation</strong><a class="anchor-link" href="#%F0%9F%A7%A0-Imagine-This-Situation">¶</a></h2><p>You're <strong>controlling a robotic arm</strong> to point at a fly on the wall. But your eyes are closed. You <strong>don’t know the perfect angles</strong> for the arm’s joints, so you <strong>guess</strong>, then feel around to see how far you are from the fly.</p>
+<p>Over time, you <strong>adjust a little</strong> left or right based on whether the arm gets closer or farther from the fly. You <strong>repeat this slowly</strong> until you're as close to the fly as possible. That’s <strong>gradient descent</strong>.</p>
+<hr/>
+<h2 id="%F0%9F%92%A1-Key-Terms">💡 Key Terms<a class="anchor-link" href="#%F0%9F%92%A1-Key-Terms">¶</a></h2><ul>
+<li><strong>Joint Angles</strong>: θ₁ and θ₂ (how much each joint is bent).</li>
+<li><strong>End-Effector</strong>: The tip of the arm (the fingertip).</li>
+<li><strong>Target Point</strong>: Where we want the end-effector to reach.</li>
+<li><strong>Cost Function</strong>: Measures how far the end-effector is from the target.</li>
+<li><strong>Gradient</strong>: Tells us in which direction (increase/decrease angle) the cost is going up or down.</li>
+<li><strong>Learning Rate</strong>: How big of a step we take in each update.</li>
+</ul>
+<hr/>
+<h2 id="%F0%9F%94%A7-Step-by-Step-Breakdown">🔧 Step-by-Step Breakdown<a class="anchor-link" href="#%F0%9F%94%A7-Step-by-Step-Breakdown">¶</a></h2><h3 id="1.-Forward-Kinematics:-Where-is-my-arm-tip-right-now?">1. <strong>Forward Kinematics: Where is my arm tip right now?</strong><a class="anchor-link" href="#1.-Forward-Kinematics:-Where-is-my-arm-tip-right-now?">¶</a></h3><p>From the current angles θ₁ and θ₂, we find the <strong>(x, y)</strong> position of the end-effector.</p>
+<p>$$
+x = l_1 \cos(\theta_1) + l_2 \cos(\theta_1 + \theta_2)
+$$</p>
+<p>$$
+y = l_1 \sin(\theta_1) + l_2 \sin(\theta_1 + \theta_2)
+$$</p>
+<p>This math <strong>adds up the positions of each segment</strong>, considering the rotation at each joint.</p>
+<hr/>
+<h3 id="2.-Compute-Cost:-How-far-am-I-from-the-goal?">2. <strong>Compute Cost: How far am I from the goal?</strong><a class="anchor-link" href="#2.-Compute-Cost:-How-far-am-I-from-the-goal?">¶</a></h3><p>$$
+\text{Cost} = \sqrt{(x - x_\text{target})^2 + (y - y_\text{target})^2}
+$$</p>
+<p>This is just the straight-line distance between where the robotic arm’s tip is and where it needs to go.</p>
+<hr/>
+<h3 id="3.-Compute-Gradient:-Which-direction-should-I-move-the-angles?">3. <strong>Compute Gradient: Which direction should I move the angles?</strong><a class="anchor-link" href="#3.-Compute-Gradient:-Which-direction-should-I-move-the-angles?">¶</a></h3><p>We <strong>slightly nudge</strong> θ₁ and θ₂ a bit (like poking them):</p>
+<div class="highlight"><pre><span></span><span class="n">grad_theta1</span> <span class="err">≈</span> <span class="p">(</span><span class="n">cost</span> <span class="n">after</span> <span class="n">nudging</span> <span class="n">θ</span><span class="err">₁</span> <span class="o">-</span> <span class="n">current</span> <span class="n">cost</span><span class="p">)</span> <span class="o">/</span> <span class="n">epsilon</span>
+<span class="n">grad_theta2</span> <span class="err">≈</span> <span class="p">(</span><span class="n">cost</span> <span class="n">after</span> <span class="n">nudging</span> <span class="n">θ</span><span class="err">₂</span> <span class="o">-</span> <span class="n">current</span> <span class="n">cost</span><span class="p">)</span> <span class="o">/</span> <span class="n">epsilon</span>
+</pre></div>
+<p>This is called <strong>numerical gradient using finite differences</strong>.</p>
+<p>Imagine feeling around to see if bending a joint makes you closer to or farther from the fly. If it helps, great! You note that direction.</p>
+<hr/>
+<h3 id="4.-Update-Angles:-Move-towards-lower-cost">4. <strong>Update Angles: Move towards lower cost</strong><a class="anchor-link" href="#4.-Update-Angles:-Move-towards-lower-cost">¶</a></h3><p>Now we use the gradients to update the angles:</p>
+<p>$$
+\theta_1 = \theta_1 - \text{learning\_rate} \times \text{grad}_1
+$$</p>
+<p>$$
+\theta_2 = \theta_2 - \text{learning\_rate} \times \text{grad}_2
+$$</p>
+<p>If the gradient is positive, this means increasing the angle increased the cost — so we subtract. If negative, we’re on the right track and keep going.</p>
+<p>This is like adjusting your arm a little based on which direction helps.</p>
+<hr/>
+<h3 id="5.-Repeat-Until-Done">5. <strong>Repeat Until Done</strong><a class="anchor-link" href="#5.-Repeat-Until-Done">¶</a></h3><p>Do this many times (say 50 or 100 times). Each time:</p>
+<ul>
+<li>Compute current position</li>
+<li>Measure distance to target</li>
+<li>Nudge angles to find gradients</li>
+<li>Update angles to reduce cost</li>
+</ul>
+<p>Eventually, the arm should <strong>point almost exactly at the target</strong>.</p>
+<hr/>
+<h2 id="%F0%9F%93%88-Summary-in-Plain-English">📈 Summary in Plain English<a class="anchor-link" href="#%F0%9F%93%88-Summary-in-Plain-English">¶</a></h2><ul>
+<li>The robotic arm wants to touch a point.</li>
+<li>It starts by guessing where to point.</li>
+<li>It measures how far the guess is.</li>
+<li>It nudges its joints to see which direction gets it closer.</li>
+<li>It adjusts the joints a bit at a time.</li>
+<li>After many tries, it gets super close.</li>
+</ul>
+<hr/>
+<h3 id="Acknowledgments">Acknowledgments<a class="anchor-link" href="#Acknowledgments">¶</a></h3><h3 id="OpenAI.-(2025).-ChatGPT-for-formatting-%5BLarge-language-model%5D.-https://openai.com/chatgpt">OpenAI. (2025). <em>ChatGPT for formatting</em> [Large language model]. <a href="https://openai.com/chatgpt">https://openai.com/chatgpt</a><a class="anchor-link" href="#OpenAI.-(2025).-ChatGPT-for-formatting-%5BLarge-language-model%5D.-https://openai.com/chatgpt">¶</a></h3><hr/>
 </div>
 </div>
 </div>
@@ -7696,8 +7757,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.visualizations.cost_convergence_plot</span> <span class="kn">import</span> <span class="n">plot_cost_convergence</span>
-<span class="kn">from</span> <span class="nn">src.visualizations.pose_comparison_plot</span> <span class="kn">import</span> <span class="n">plot_pose_comparison</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.visualizations.cost_convergence_plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_cost_convergence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.visualizations.pose_comparison_plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_pose_comparison</span>
 </pre></div>
 </div>
 </div>
@@ -7719,10 +7780,10 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">run_simulation</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p">():</span>
     <span class="c1"># Initial angles</span>
     <span class="n">theta1_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">theta2_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -7773,7 +7834,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Main-Run">Main Run<a class="anchor-link" href="#Main-Run">¶</a></h2>
+<h2 id="Run-Gradient-Descent-Optimization">Run Gradient Descent Optimization<a class="anchor-link" href="#Run-Gradient-Descent-Optimization">¶</a></h2><p>This cell performs 50 iterations of gradient descent using numerical gradient approximation.<br/>
+We store the history of θ₁, θ₂, and cost per iteration.</p>
 </div>
 </div>
 </div>
@@ -7835,6 +7897,17 @@ Iteration 50: Cost = 0.1451
 ✅ Final Cost: 0.1451
 </pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b7b5e43f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Acknowledgments">Acknowledgments<a class="anchor-link" href="#Acknowledgments">¶</a></h2><p>OpenAI. (2025). <em>ChatGPT’s assistance with mathematical modeling and code generation for DS623 Optimotion project</em> [Large language model]. <a href="https://openai.com/chatgpt">https://openai.com/chatgpt</a></p>
 </div>
 </div>
 </div>
