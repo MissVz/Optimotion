@@ -60,7 +60,7 @@ def compute_gradients(theta1, theta2, target_x, target_y, epsilon=1e-5):
     return grad_theta1, grad_theta2
 
 # Define gradient descent optimizer
-def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.1, iterations=100):
+def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.1, iterations=100, verbose=True):
     """
     Perform gradient descent to optimize joint angles.
 
@@ -86,7 +86,7 @@ def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_ra
 
         history.append((theta1, theta2, cost))
 
-        if i % 10 == 0 or i == iterations - 1:
+        if verbose and (i % 10 == 0 or i == iterations - 1):
             print(f"Iteration {i+1}: Cost = {cost:.4f}")
 
     return theta1, theta2, history
