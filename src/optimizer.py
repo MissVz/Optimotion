@@ -37,7 +37,7 @@ def compute_cost(theta1, theta2, target_x, target_y, link1_length=1.0, link2_len
     return cost
 
 # Define gradient computation
-def compute_gradients(theta1, theta2, target_x, target_y, epsilon=1e-5):
+def compute_gradients(theta1, theta2, target_x, target_y, epsilon=1e-5, link1_length=1.0, link2_length=1.0):
     """
     Compute numerical gradients of the cost function with respect to theta1 and theta2 using finite differences.
 
@@ -49,18 +49,18 @@ def compute_gradients(theta1, theta2, target_x, target_y, epsilon=1e-5):
     Returns:
     - grad_theta1, grad_theta2: Estimated gradients
     """
-    cost = compute_cost(theta1, theta2, target_x, target_y)
+    cost = compute_cost(theta1, theta2, target_x, target_y, link1_length, link2_length)
 
-    cost_theta1 = compute_cost(theta1 + epsilon, theta2, target_x, target_y)
+    cost_theta1 = compute_cost(theta1 + epsilon, theta2, target_x, target_y, link1_length, link2_length)
     grad_theta1 = (cost_theta1 - cost) / epsilon
 
-    cost_theta2 = compute_cost(theta1, theta2 + epsilon, target_x, target_y)
+    cost_theta2 = compute_cost(theta1, theta2 + epsilon, target_x, target_y, link1_length, link2_length)
     grad_theta2 = (cost_theta2 - cost) / epsilon
 
     return grad_theta1, grad_theta2
 
 # Define gradient descent optimizer
-def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.1, iterations=100, verbose=True):
+def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_rate=0.1, iterations=100, verbose=True, link1_length=1.0, link2_length=1.0):
     """
     Perform gradient descent to optimize joint angles.
 
@@ -78,7 +78,7 @@ def optimize_arm(initial_theta1, initial_theta2, target_x, target_y, learning_ra
     history = []
 
     for i in range(iterations):
-        cost = compute_cost(theta1, theta2, target_x, target_y)
+        cost = compute_cost(theta1, theta2, target_x, target_y, link1_length, link2_length)
         grad1, grad2 = compute_gradients(theta1, theta2, target_x, target_y)
 
         theta1 -= learning_rate * grad1
