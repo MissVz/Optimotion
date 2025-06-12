@@ -20,7 +20,7 @@ from math import sqrt
 from src.robotic_arm import forward_kinematics  # Adjust path if needed
 
 # Define cost function
-def compute_cost(theta1, theta2, target_x, target_y, link1_length=1.0, link2_length=1.0):
+def compute_cost(theta1, theta2, target_x, target_y, link1_length=1.0, link2_length=1.0, lambda_energy=0.0, lambda_smooth=0.0, prev_theta1=None, prev_theta2=None):
     """
     Compute the cost as the Euclidean distance between end-effector and target.
 
@@ -33,8 +33,20 @@ def compute_cost(theta1, theta2, target_x, target_y, link1_length=1.0, link2_len
     - cost: Euclidean distance to target
     """
     x, y = forward_kinematics(theta1, theta2, link1_length, link2_length)
-    cost = sqrt((x - target_x)**2 + (y - target_y)**2)
-    return cost
+    # Distance to target (main cost)
+    distance_cost = np.sqrt((x - target_x) ** 2 + (y - target_y) ** 2)
+
+    # Technique: Energy Penalty (Regularization)
+    # Penalizes large joint angles to promote energy-efficient poses
+    energy_penalty = lambda_energy * (theta1 ** 2 + theta2 ** 2)
+
+    # Technique: Angle Change Penalty (Smoothness Regularization)
+    # Penalizes drastic changes from previous angles to promote smoother movement
+    smooth_penalty = 0
+    if prev_theta1 is not None and prev_theta2 is not None:
+        smooth_penalty = lambda_smooth * ((theta1 - prev_theta1) ** 2 + (theta2 - prev_theta2) ** 2)
+
+    return distance_cost + energy_penalty + smooth_penalty
 
 # Define gradient computation
 def compute_gradients(theta1, theta2, target_x, target_y, epsilon=1e-5, link1_length=1.0, link2_length=1.0):
