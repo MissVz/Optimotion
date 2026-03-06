@@ -1,8 +1,8 @@
 Optimotion: Gradient-Based Robotic Arm Optimization
-City University of Seattle – DS623 Math & Statistics for Data Science
 
 Team Members:
 Verónica Elze (Master of Artificial Intelligence)
+Sumit Chahar 
 
 Project Overview:
 Optimotion simulates and optimizes a two-joint robotic arm using foundational mathematical principles.
